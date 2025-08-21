@@ -1,62 +1,48 @@
-// --- Popups ---
-function openPopup(id) {
-  document.getElementById(id).style.display = 'flex';
-}
-function closePopup(id) {
-  document.getElementById(id).style.display = 'none';
-}
-
-// --- Partículas (estrelas) ---
-const canvas = document.getElementById("stars");
-const ctx = canvas.getContext("2d");
-
-let stars = [];
-const numStars = 150;
-
-function resizeCanvas() {
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-}
-window.addEventListener("resize", resizeCanvas);
-resizeCanvas();
-
-function createStars() {
-  stars = [];
-  for (let i = 0; i < numStars; i++) {
-    stars.push({
-      x: Math.random() * canvas.width,
-      y: Math.random() * canvas.height,
-      radius: Math.random() * 1.5,
-      speed: Math.random() * 0.5 + 0.2
+document.addEventListener('DOMContentLoaded', function() {
+    // Configurar o vídeo para loop reverso
+    const video = document.getElementById('galaxyVideo');
+    
+    // Quando o vídeo terminar, reproduzir em reverso
+    video.addEventListener('ended', function() {
+        this.playbackRate = -1;
+        this.play();
     });
-  }
-}
+    
+    // Quando o vídeo chegar ao início (quando estiver reproduzindo em reverso)
+    video.addEventListener('timeupdate', function() {
+        if (this.playbackRate === -1 && this.currentTime <= 0) {
+            this.playbackRate = 1;
+            this.play();
+        }
+    });
 
-function drawStars() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  ctx.fillStyle = "white";
-  for (let star of stars) {
-    ctx.beginPath();
-    ctx.arc(star.x, star.y, star.radius, 0, 2 * Math.PI);
-    ctx.fill();
-  }
-}
+    // Abrir e fechar popups
+    const popups = document.querySelectorAll('.popup');
+    const links = document.querySelectorAll('.nav-link');
+    const closeButtons = document.querySelectorAll('.close');
 
-function updateStars() {
-  for (let star of stars) {
-    star.y += star.speed;
-    if (star.y > canvas.height) {
-      star.y = 0;
-      star.x = Math.random() * canvas.width;
-    }
-  }
-}
+    // Abrir popup ao clicar no link
+    links.forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            const pageId = this.getAttribute('data-page');
+            document.getElementById(pageId).style.display = 'flex';
+        });
+    });
 
-function animate() {
-  drawStars();
-  updateStars();
-  requestAnimationFrame(animate);
-}
+    // Fechar popup ao clicar no X
+    closeButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            this.closest('.popup').style.display = 'none';
+        });
+    });
 
-createStars();
-animate();
+    // Fechar popup ao clicar fora do conteúdo
+    popups.forEach(popup => {
+        popup.addEventListener('click', function(e) {
+            if (e.target === this) {
+                this.style.display = 'none';
+            }
+        });
+    });
+});
