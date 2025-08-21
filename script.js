@@ -2,19 +2,19 @@ document.addEventListener('DOMContentLoaded', function() {
     // Configurar o vídeo para loop reverso
     const video = document.getElementById('galaxyVideo');
     
-    // Quando o vídeo terminar, reproduzir em reverso
-    video.addEventListener('ended', function() {
-        this.playbackRate = -1;
-        this.play();
-    });
-    
-    // Quando o vídeo chegar ao início (quando estiver reproduzindo em reverso)
-    video.addEventListener('timeupdate', function() {
-        if (this.playbackRate === -1 && this.currentTime <= 0) {
-            this.playbackRate = 1;
+    if (video) {
+        video.addEventListener('ended', function() {
+            this.playbackRate = -1;
             this.play();
-        }
-    });
+        });
+        
+        video.addEventListener('timeupdate', function() {
+            if (this.playbackRate === -1 && this.currentTime <= 0) {
+                this.playbackRate = 1;
+                this.play();
+            }
+        });
+    }
 
     // Abrir e fechar popups
     const popups = document.querySelectorAll('.popup');
@@ -26,14 +26,25 @@ document.addEventListener('DOMContentLoaded', function() {
         link.addEventListener('click', function(e) {
             e.preventDefault();
             const pageId = this.getAttribute('data-page');
-            document.getElementById(pageId).style.display = 'flex';
+            const popup = document.getElementById(pageId);
+            
+            if (popup) {
+                popup.style.display = 'flex';
+                // Impede a rolagem da página de fundo quando o popup está aberto
+                document.body.style.overflow = 'hidden';
+            }
         });
     });
 
     // Fechar popup ao clicar no X
     closeButtons.forEach(button => {
         button.addEventListener('click', function() {
-            this.closest('.popup').style.display = 'none';
+            const popup = this.closest('.popup');
+            if (popup) {
+                popup.style.display = 'none';
+                // Restaura a rolagem da página
+                document.body.style.overflow = 'auto';
+            }
         });
     });
 
@@ -42,7 +53,20 @@ document.addEventListener('DOMContentLoaded', function() {
         popup.addEventListener('click', function(e) {
             if (e.target === this) {
                 this.style.display = 'none';
+                // Restaura a rolagem da página
+                document.body.style.overflow = 'auto';
             }
         });
+    });
+
+    // Fechar popup com a tecla ESC
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            popups.forEach(popup => {
+                popup.style.display = 'none';
+            });
+            // Restaura a rolagem da página
+            document.body.style.overflow = 'auto';
+        }
     });
 });
