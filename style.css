@@ -1,0 +1,103 @@
+/* Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Cinzel', serif;
+}
+
+/* Background vídeo */
+#bg-video {
+  position: fixed;
+  top: 0;
+  left: 0;
+  min-width: 100%;
+  min-height: 100%;
+  object-fit: cover;
+  z-index: -2;
+}
+
+/* Canvas de estrelas */
+#stars {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: -1;
+}
+
+/* Navbar central */
+.navbar {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  gap: 40px;
+}
+
+.navbar a {
+  text-decoration: none;
+  color: #fff;
+  font-size: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: transform 0.3s, color 0.3s;
+}
+
+.navbar a i {
+  font-size: 40px;
+  margin-bottom: 8px;
+}
+
+.navbar a:hover {
+  transform: scale(1.2);
+  color: #00eaff;
+  text-shadow: 0 0 10px #00eaff, 0 0 20px #00eaff;
+}
+
+/* Popups estilo Final Fantasy */
+.popup {
+  display: none;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  z-index: 10;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(5, 5, 20, 0.8);
+}
+
+.popup-content {
+  background: rgba(15, 15, 40, 0.9);
+  border: 2px solid #00eaff;
+  border-radius: 12px;
+  padding: 30px;
+  width: 400px;
+  color: #fff;
+  text-align: center;
+  box-shadow: 0 0 20px #00eaff, 0 0 40px #005577;
+  animation: fadeIn 0.5s ease;
+}
+
+.popup-content h2 {
+  font-family: 'Cinzel Decorative', cursive;
+  margin-bottom: 15px;
+  text-shadow: 0 0 10px #00eaff;
+}
+
+.popup .close {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  color: #fff;
+  font-size: 28px;
+  cursor: pointer;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.8); }
+  to { opacity: 1; transform: scale(1); }
+}
